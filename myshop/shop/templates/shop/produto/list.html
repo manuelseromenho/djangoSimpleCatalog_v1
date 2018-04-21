@@ -1,0 +1,11 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+    {% for produto in produtos %}
+        <p>{{produto.nome}} {{produto.preco}}€ </p>
+        <div class="item">
+            <img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">
+        </div>
+    {% endfor %}
+{% endblock %}
