@@ -5,7 +5,8 @@
     {% for produto in produtos %}
         <p>{{produto.nome}} {{produto.preco}}€ </p>
         <div class="item">
-            <img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">
+            <img src="{{ product.image.url }}"/>
+            <!--<img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">-->
         </div>
     {% endfor %}
 {% endblock %}
