@@ -1,12 +1,32 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{% block content %}
-    {% for produto in produtos %}
-        <p>{{produto.nome}} {{produto.preco}}€ </p>
-        <div class="item">
-            <img src="{{ product.image.url }}"/>
-            <!--<img src="{% if product.image %}{{ product.image.url }}{%else %}{% static "img/no_image.png" %}{% endif %}">-->
-        </div>
-    {% endfor %}
+{% block title %}
+    {% if subcategoria %}{{ subcategoria.name }}{% else %}Products{% endif %}
+{% endblock %}
+
+
+
+    <div id="sidebar">
+        <h3>SubCategorias</h3>
+        <ul>
+            <a href="{% url "shop:product_list" %}">Todos</a>
+
+            {% for c in subcategorias %}
+                <br/>
+                <a href="{{ c.get_absolute_url }}">{{ c.nome }}</a>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div id="main" class="product-list">
+        {% for produto in produtos %}
+            <div class="item">
+                <a href="{{ produto.get_absolute_url }}">
+                    <img src="{% if produto.imagem %}{{ produto.imagem.url }}{%else %}{% static "shop/img/no_image.png" %}{% endif %}">
+                    {{produto.nome}} {{produto.preco}}€ a
+                </a>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
