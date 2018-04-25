@@ -2,5 +2,19 @@
 {% load static %}
 
 {% block content %}
-    {{ produto.nome }}<br>
+    <div class="product-detail">
+        <img src="{% if produto.imagem %}{{ produto.imagem.url }}{%else %}{% static "shop/img/no_image.png" %}{% endif %}">
+        <h1>{{ produto.nome }}</h1>
+        <h2><a href="{{ produto.subcategoria.get_absolute_url }}">{{ produto.subcategoria }}</a></h2>
+        <p class="price"> PVP: {{ produto.preco }} €</p>
+
+        {% if produto.stock > 0 %}
+            <p style="color: green"> Em Stock!</p>
+        {% else %}
+            <p style="color: red"> Sem Stock!</p>
+        {% endif %}
+
+        {{ product.description|linebreaks }}
+        Descrição: {{ produto.descricao }}
+    </div>
 {% endblock %}

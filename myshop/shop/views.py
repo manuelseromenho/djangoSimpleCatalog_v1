@@ -17,9 +17,19 @@ def product_list(request, sub_category_slug=None, category_slug=None):
 
     produtos = Produto.objects.filter(disponivel=True)
 
-    if category_slug:
-        categoria = get_object_or_404(Categoria, slug=category_slug)
-        produtos = produtos.filter(categoria=categoria)
+    preco_min = request.GET.get('preco_min', 0)
+    preco_max = request.GET.get('preco_max', 10000)
+
+    if not preco_min:
+        preco_min = 0
+    if not preco_max:
+        preco_max = 3000
+
+    produtos = produtos.filter(preco__gte=preco_min, preco__lte=preco_max)
+
+    # if category_slug:
+    #     categoria = get_object_or_404(Categoria, slug=category_slug)
+    #     produtos = produtos.filter(categoria=categoria)
 
 
     if sub_category_slug:

@@ -185,6 +185,12 @@ ul.errorlist {
     color:#fff;
 }
 
+/********Manuel Seromenho***********/
+#sidebar form input{
+    width:95%;
+}
+/***********************************/
+
 #main {
     float:left;
     width: 96%;

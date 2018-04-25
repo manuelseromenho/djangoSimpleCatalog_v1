@@ -5,8 +5,7 @@
     {% if subcategoria %}{{ subcategoria.name }}{% else %}Products{% endif %}
 {% endblock %}
 
-
-
+{% block content %}
     <div id="sidebar">
         <h3>SubCategorias</h3>
         <ul>
@@ -17,6 +16,16 @@
                 <a href="{{ c.get_absolute_url }}">{{ c.nome }}</a>
             {% endfor %}
         </ul>
+
+        <br/>
+        <p>Pesquisa por preço:</p>
+        <form method="get" action="" class="filtro_preco">
+            Preço Mínimo:<br>
+            <input type="text" name="preco_min"><br>
+            Preço Máximo:<br>
+            <input type="text" name="preco_max">
+            <input type="submit" data-inline="true" value="Filter">
+        </form>
     </div>
 
     <div id="main" class="product-list">
@@ -24,7 +33,7 @@
             <div class="item">
                 <a href="{{ produto.get_absolute_url }}">
                     <img src="{% if produto.imagem %}{{ produto.imagem.url }}{%else %}{% static "shop/img/no_image.png" %}{% endif %}">
-                    {{produto.nome}} {{produto.preco}}€ a
+                    {{produto.nome}} {{produto.preco}}€
                 </a>
             </div>
         {% endfor %}

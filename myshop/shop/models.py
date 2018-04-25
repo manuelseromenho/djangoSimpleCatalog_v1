@@ -40,7 +40,6 @@ class SubCategoria(models.Model):
 
 class Produto(models.Model):
 
-    #categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE)
     subcategoria = models.ForeignKey(SubCategoria, on_delete=models.CASCADE)
     nome = models.CharField(max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, db_index=True)
