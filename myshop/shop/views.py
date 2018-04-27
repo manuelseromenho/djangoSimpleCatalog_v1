@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from .models import Categoria, SubCategoria, Produto
+from django.contrib.auth.decorators import login_required
+
 
 
 # # def index(request):
@@ -45,7 +47,6 @@ def product_list(request, sub_category_slug=None, category_slug=None):
             'produtos': produtos
         })
 
-
 def product_details(request, product_slug):
 
     # produto = Produto.objects.filter(slug=product_slug).first()
@@ -56,3 +57,7 @@ def product_details(request, product_slug):
 
     return render(request,'shop/produto/details.html',
         {'produto': produto,})
+
+@login_required
+def dashboard(request):
+    return render(request,'shop/dashboard.html',{'section': 'dashboard'})
