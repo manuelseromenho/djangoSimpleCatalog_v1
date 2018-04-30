@@ -6,12 +6,14 @@
     <h1>Login</h1>
     {% if form.errors %}
         <p>
-        Nome de utilizador/password errados?
-        Tente de novo!
+            Nome de utilizador/password errados?
+            Tente de novo!
         </p>
     {% else %}
         <p>Faça o login:</p>
     {% endif %}
+
+    <a href="{% url "shop:password_reset" %}">Recuperar palavra passe?</a>
     <div class="login-form">
         <form method="post" action="{% url 'shop:login' %}">
             {{ form.as_p }}
@@ -23,3 +25,4 @@
 
 
 {% endblock %}
+
