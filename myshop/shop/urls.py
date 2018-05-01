@@ -11,6 +11,8 @@ from django.contrib.auth.views import (
 
 urlpatterns = [
 
+    # user registration
+    url(r'^register/$', views.register, name='register'),
 
     # restore password urls
     url(r'^password-reset/$',
