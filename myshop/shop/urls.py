@@ -2,7 +2,8 @@ from django.conf.urls import url
 from django.contrib import admin
 #from django.contrib.auth import views as auth_views
 from . import views
-# add to the top
+
+
 from django.contrib.auth.views import (
     password_change,
     password_change_done,
@@ -47,8 +48,6 @@ urlpatterns = [
     url(r'^(?P<sub_category_slug>[-\w]+)/$', views.product_list, name='product_list_by_subcategory'),
     url(r'^product/(?P<product_slug>[-\w]+)/$', views.product_details, name='product_details'),
     url(r'^$', views.product_list, name="product_list"),
-
-
 
 
 

@@ -10,12 +10,12 @@
             Tente de novo!
         </p>
     {% else %}
-        <p>Faça o login:</p>
+        <p>Faça o login, caso não tenha uma conta <a href="{% url "shop:register" %}">registe-se</a></p>
     {% endif %}
 
     <a href="{% url "shop:password_reset" %}">Recuperar palavra passe?</a>
     <div class="login-form">
-        <form method="post" action="{% url 'shop:login' %}">
+        <form method="post" action="{% url "shop:login" %}">
             {{ form.as_p }}
             {% csrf_token %}
             <input type="hidden" name="next" value="{{ next }}"/>

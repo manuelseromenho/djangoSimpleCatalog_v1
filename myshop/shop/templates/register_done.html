@@ -1,8 +1,9 @@
 {% extends "shop/base.html" %}
 {% block title %}Bem-Vindo!{% endblock %}
+
 {% block content %}
     <h1>Bem-Vindo {{ new_user.first_name }}!</h1>
     <p>A sua conta for criada!
-        Faça <a href="{% url "login" %}">log in</a>.
+        Faça <a href="{% url "shop:login" %}">log in</a>.
     </p>
 {% endblock %}
