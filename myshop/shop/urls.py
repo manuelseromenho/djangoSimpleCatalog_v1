@@ -12,6 +12,9 @@ from django.contrib.auth.views import (
 
 urlpatterns = [
 
+    # edit user profile
+    url(r'^edit/$', views.edit, name='edit'),
+
     # user registration
     url(r'^register/$', views.register, name='register'),
 

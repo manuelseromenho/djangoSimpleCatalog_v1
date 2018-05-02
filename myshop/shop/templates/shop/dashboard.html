@@ -1,7 +1,17 @@
 {% extends "shop/base.html" %}
+{% load static %}
+
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
     <h1>Dashboard</h1>
-    <p>Welcome to your dashboard.</p>
+    <h3>Foto:</h3>
+    {% if foto %}
+        <img style="width:20%" src="{% static foto.url %}" />
+    {% endif %}
+
+    <p>You can
+        <a href="{% url "shop:edit" %}">edit your profile</a> or
+        <a href="{% url "shop:password_change" %}">change your password</a>.
+    </p>
 {% endblock %}

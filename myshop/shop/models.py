@@ -1,5 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.conf import settings
 from django.core.urlresolvers import reverse
+
 
 class Categoria(models.Model):
 
@@ -36,8 +39,6 @@ class SubCategoria(models.Model):
         return reverse('shop:product_list_by_subcategory', args=[self.slug])
 
 
-
-
 class Produto(models.Model):
 
     subcategoria = models.ForeignKey(SubCategoria, on_delete=models.CASCADE)
@@ -61,3 +62,11 @@ class Produto(models.Model):
     def get_absolute_url(self):
         return reverse('shop:product_details', args=[self.slug])
 
+
+class Perfil(models.Model):
+    utilizador = models.OneToOneField(User)
+    data_nascimento = models.DateField(blank=True, null=True)
+    foto = models.ImageField(upload_to='utilizadores/%Y/%m/%d', blank=True)
+
+    def __str__(self):
+        return 'Perfil do utilizador{}'.format(self.utilizador.username)

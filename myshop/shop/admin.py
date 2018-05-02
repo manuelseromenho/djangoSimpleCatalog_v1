@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categoria, SubCategoria, Produto
+from .models import Categoria, SubCategoria, Produto, Perfil
 
 
 class CategoriaAdmin(admin.ModelAdmin):
@@ -22,7 +22,6 @@ class SubCategoriaAdmin(admin.ModelAdmin):
     subcategoria.admin_order_field = "nome"
 
 
-
 admin.site.register(SubCategoria, SubCategoriaAdmin)
 
 
@@ -34,3 +33,9 @@ class ProdutoAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Produto, ProdutoAdmin)
+
+
+class PerfilAdmin(admin.ModelAdmin):
+    list_display = ['utilizador', 'data_nascimento', 'foto']
+
+admin.site.register(Perfil, PerfilAdmin)

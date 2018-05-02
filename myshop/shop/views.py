@@ -1,8 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Categoria, SubCategoria, Produto
+from .models import Categoria, SubCategoria, Produto, Perfil
 from django.contrib.auth.decorators import login_required
-from .forms import LoginForm, UserRegistrationForm
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm
 
 
 
@@ -54,14 +55,25 @@ def product_details(request, product_slug):
     # produto = Produto.objects.get(slug=product_slug)
     produto = get_object_or_404(Produto, slug=product_slug)
 
-
-
     return render(request,'shop/produto/details.html',
-        {'produto': produto,})
+        {'produto': produto})
 
 @login_required
 def dashboard(request):
-    return render(request,'shop/dashboard.html',{'section': 'dashboard'})
+    profile_foto = None
+
+    # I'm almost certain that this check becomes redundant with the above decorator
+    if request.user.is_authenticated:
+        try:
+            profile = Perfil.objects.get(utilizador=request.user)
+            profile_foto = profile.foto
+        except ObjectDoesNotExist:
+            pass
+
+    return render(request,'shop/dashboard.html',{
+        'section': 'dashboard',
+        'foto': profile_foto
+    })
 
 
 def register(request):
@@ -77,6 +89,8 @@ def register(request):
                 user_form.cleaned_data['password'])
             # Save the User object
             new_user.save()
+            # Create the user profile
+            perfil = Perfil.objects.create(utilizador=new_user)
             return render(request,
                           'register_done.html',
                           {'new_user': new_user})
@@ -85,3 +99,21 @@ def register(request):
     return render(request,
                   'register.html',
                   {'user_form': user_form})
+
+@login_required
+def edit(request):
+    if request.method == 'POST':
+        user_form = UserEditForm(
+            instance=request.user,
+            data=request.POST)
+        perfil_form = PerfilEditForm(
+            instance=request.user.perfil,
+            data=request.POST,
+            files=request.FILES)
+        if user_form.is_valid() and perfil_form.is_valid():
+            user_form.save()
+            perfil_form.save()
+    else:
+        user_form = UserEditForm(instance=request.user)
+        perfil_form = PerfilEditForm(instance=request.user.perfil)
+    return render(request,'shop/edit.html',{'user_form': user_form,'perfil_form': perfil_form})
