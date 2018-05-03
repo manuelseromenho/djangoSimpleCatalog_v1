@@ -16,5 +16,17 @@
 
         {{ product.description|linebreaks }}
         Descrição: {{ produto.descricao }}
+
+
+        <form action='{% url "shop:adicionar_carrinho" %}' method="post">
+            {% csrf_token %}
+            <input type="hidden" value="{{ produto.nome }}"/>
+            <input type="hidden" name="slug" value="{{ produto.slug }}"/>
+            <input type="submit" value="Add to Cart"/>
+        </form>
+
+{#        {% if request.method == 'POST' %}#}
+{#            {{ request.user.first_name }} com o produto {{ produto.nome }}#}
+{#        {% endif %}#}
     </div>
 {% endblock %}

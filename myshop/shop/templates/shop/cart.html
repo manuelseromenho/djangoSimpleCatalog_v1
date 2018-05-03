@@ -1,0 +1,13 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block content %}
+    <div>
+        <h1>Carrinho</h1>
+        {% for item in itens %}
+            Produto: {{ item }} Qtd:{{ item.quantidade }}
+            <br/>
+        {% endfor %}
+
+    </div>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Categoria, SubCategoria, Produto, Perfil
+from .models import Categoria, SubCategoria, Produto, Perfil, Carrinho, Item
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm
 
@@ -12,7 +12,6 @@ from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm
 
 
 def product_list(request, sub_category_slug=None, category_slug=None):
-
     categoria = None
     categorias = Categoria.objects.all()
 
@@ -53,10 +52,48 @@ def product_details(request, product_slug):
 
     # produto = Produto.objects.filter(slug=product_slug).first()
     # produto = Produto.objects.get(slug=product_slug)
+
+    #if request.method == 'GET':
     produto = get_object_or_404(Produto, slug=product_slug)
 
     return render(request,'shop/produto/details.html',
-        {'produto': produto})
+    {'produto': produto})
+
+
+
+def adicionar_carrinho(request):
+    slug = request.POST.get('slug', '')
+    if request.method == 'POST':
+        produto = get_object_or_404(Produto, slug=slug)
+
+        #Pesquisar por utilizador
+        utilizador = request.user
+
+        #Filtrar carrinho por user, se não existir criar
+        carrinho = Carrinho.objects.filter(utilizador=utilizador).first()
+
+        #Com o carrinho verificar se existem o item dentro do carrinho
+        # se existir aumenta a quantidade
+        # cc Cria o item e adiciona ao carrinho
+
+        #return render(request, 'shop/cart.html', {'produto': produto})
+
+
+def mostrar_carrinho(request):
+
+    #if request.method == 'POST':
+        utilizador = request.user
+        #Filtrar carrinho por user, se não existir criar
+        carrinho = Carrinho.objects.filter(utilizador=utilizador).first()
+        itens = Item.objects.filter(carrinho = carrinho)
+
+        #Com o carrinho verificar se existem o item dentro do carrinho
+        # se existir aumenta a quantidade
+        # cc Cria o item e adiciona ao carrinho
+        return render(request, 'shop/cart.html', {'itens': itens})
+
+
+
 
 @login_required
 def dashboard(request):
@@ -117,3 +154,4 @@ def edit(request):
         user_form = UserEditForm(instance=request.user)
         perfil_form = PerfilEditForm(instance=request.user.perfil)
     return render(request,'shop/edit.html',{'user_form': user_form,'perfil_form': perfil_form})
+

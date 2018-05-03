@@ -28,7 +28,11 @@
         </div>
         <div id="subheader">
             <div class="cart">
-                Your cart is empty.
+                {% if request.user.is_authenticated %}
+                    <a href="{% url "shop:mostrar_carrinho" %}">Ver Carrinho</a>
+                    ####TEXTO CARRINHO####
+                {% endif %}
+
             </div>
         </div>
         <div id="content">

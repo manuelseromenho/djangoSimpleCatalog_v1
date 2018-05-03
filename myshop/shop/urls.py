@@ -9,8 +9,9 @@ from django.contrib.auth.views import (
     password_change_done,
 )
 
-
 urlpatterns = [
+
+
 
     # edit user profile
     url(r'^edit/$', views.edit, name='edit'),
@@ -48,10 +49,14 @@ urlpatterns = [
 
 
 
-    url(r'^(?P<sub_category_slug>[-\w]+)/$', views.product_list, name='product_list_by_subcategory'),
+
     url(r'^product/(?P<product_slug>[-\w]+)/$', views.product_details, name='product_details'),
+
+    # url(r'^adicionar/(?P<product_slug>[-\w]+)/$', views.adicionar_carrinho, name="adicionar_carrinho"),
+    url(r'^adicionar/$', views.adicionar_carrinho, name="adicionar_carrinho"),
+    url(r'^carrinho/$', views.mostrar_carrinho, name="mostrar_carrinho"),
+
     url(r'^$', views.product_list, name="product_list"),
-
-
+    url(r'^(?P<sub_category_slug>[-\w]+)/$', views.product_list, name='product_list_by_subcategory'),
 
 ]
