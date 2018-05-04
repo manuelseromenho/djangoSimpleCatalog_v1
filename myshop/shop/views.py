@@ -1,9 +1,16 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
+
 from django.http import HttpResponse
 from .models import Categoria, SubCategoria, Produto, Perfil, Carrinho, Item
 from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm
+
+from django.views.generic import DeleteView
+
+class ItemDelete(DeleteView):
+    model = Item
+    success_url = '/carrinho'
 
 
 
@@ -66,28 +73,28 @@ def adicionar_carrinho(request):
     if request.method == 'POST':
         produto = get_object_or_404(Produto, slug=slug)
 
-        #Pesquisar por utilizador
+        # Pesquisar por utilizador
         utilizador = request.user
 
-        #Filtrar carrinho por user, se não existir criar
+        # Filtrar carrinho por user, se não existir criar
         carrinho = Carrinho.objects.filter(utilizador=utilizador).first()
 
-        #Com o carrinho verificar se existem o item dentro do carrinho
+        # Com o carrinho verificar se existem o item dentro do carrinho
         # se existir aumenta a quantidade
         # cc Cria o item e adiciona ao carrinho
 
-        #return render(request, 'shop/cart.html', {'produto': produto})
+        # return render(request, 'shop/cart.html', {'produto': produto})
 
 
 def mostrar_carrinho(request):
 
-    #if request.method == 'POST':
+    # if request.method == 'POST':
         utilizador = request.user
-        #Filtrar carrinho por user, se não existir criar
+        # Filtrar carrinho por user, se não existir criar
         carrinho = Carrinho.objects.filter(utilizador=utilizador).first()
         itens = Item.objects.filter(carrinho = carrinho)
 
-        #Com o carrinho verificar se existem o item dentro do carrinho
+        # Com o carrinho verificar se existem o item dentro do carrinho
         # se existir aumenta a quantidade
         # cc Cria o item e adiciona ao carrinho
         return render(request, 'shop/cart.html', {'itens': itens})
@@ -107,7 +114,7 @@ def dashboard(request):
         except ObjectDoesNotExist:
             pass
 
-    return render(request,'shop/dashboard.html',{
+    return render(request,'shop/dashboard.html', {
         'section': 'dashboard',
         'foto': profile_foto
     })
