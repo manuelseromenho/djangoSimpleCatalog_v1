@@ -9,7 +9,7 @@
     </head>
     <body>
         <div id="header">
-            <a href="/" class="logo">RogueBitShop</a>
+            <a href="/shop" class="logo">RogueBitShop</a>
             <div>
                 {% if request.user.is_authenticated %}
                     <a href="{% url "shop:dashboard" %}">My dashboard</a>
@@ -29,7 +29,7 @@
         <div id="subheader">
             <div class="cart">
                 {% if request.user.is_authenticated %}
-                    <a href="{% url "shop:mostrar_carrinho" %}">Ver Carrinho</a>
+                    <a href="{% url "cart:mostrar_carrinho" %}">Ver Carrinho</a>
                     ####TEXTO CARRINHO####
                 {% endif %}
 

@@ -28,6 +28,12 @@ a.button, input[type="submit"] {
     border:0;
 }
 
+/********Manuel Seromenho***********/
+#delete_item_button{
+    padding:5px 8px;
+}
+/***********************************/
+
 a.button.light {
     color:#666;
     background:#ededed;
