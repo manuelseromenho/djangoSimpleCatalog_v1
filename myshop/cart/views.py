@@ -40,17 +40,17 @@ def adicionar_carrinho(request):
         # Pesquisar por utilizador
         utilizador = request.user
 
-        # Filtrar carrinho por user, se não existir criar
-        carrinho = Carrinho.objects.filter(utilizador=utilizador).first()
+        # ***** Filtrar carrinho por user, se não existir criar
+        carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
 
         # Com o carrinho verificar se existem o item dentro do carrinho
         # se existir aumenta a quantidade
         # cc Cria o item e adiciona ao carrinho
-        item_repetido = Item.objects.filter(carrinho=carrinho, item=produto).first()
+        item_repetido = Item.objects.filter(carrinho=carrinho, produto=produto).first()
         if not item_repetido:
             # Criar novo Item
             item = Item(
-                item=produto,
+                produto=produto,
                 quantidade=quantity,
                 carrinho=carrinho
             )
@@ -60,6 +60,11 @@ def adicionar_carrinho(request):
             item_repetido.quantidade += int(quantity)
             item_repetido.save()
             # return render(request, 'cart/cart.html')
+
+        itens = Item.objects.filter(carrinho=carrinho)
+        total = sum(i.produto.preco * i.quantidade for i in itens)
+        carrinho.total = total
+        carrinho.save()
 
         return mostrar_carrinho(request)
 
@@ -74,15 +79,21 @@ def adicionar_carrinho(request):
 def mostrar_carrinho(request):
 
     # if request.method == 'POST':
-        utilizador = request.user
-        # Filtrar carrinho por user, se não existir criar
-        carrinho = Carrinho.objects.filter(utilizador=utilizador).first()
-        itens = Item.objects.filter(carrinho = carrinho)
+    utilizador = request.user
+    # Filtrar carrinho por user, se não existir criar
+    carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+    #itens = Item.objects.filter(carrinho = carrinho).select_related('produto')
+    itens = Item.objects.filter(carrinho=carrinho)
 
-        # Com o carrinho verificar se existem o item dentro do carrinho
-        # se existir aumenta a quantidade
-        # cc Cria o item e adiciona ao carrinho
-        return render(request, 'cart/cart.html', {'itens': itens})
+    # total = sum(i.produto.preco*i.quantidade for i in itens)
+    total = carrinho.total
+
+    #item = Item.objects.filter(item=id_produto).first()
+
+    # Com o carrinho verificar se existem o item dentro do carrinho
+    # se existir aumenta a quantidade
+    # cc Cria o item e adiciona ao carrinho
+    return render(request, 'cart/cart.html', {'itens': itens, 'total': total})
 
 
 

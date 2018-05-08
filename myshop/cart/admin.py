@@ -13,8 +13,8 @@ admin.site.register(Carrinho, CarrinhoAdmin)
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ["item", "carrinho", "quantidade"]
+    list_display = ["produto", "carrinho", "quantidade"]
     list_filter = ["carrinho"]
-    list_editable = ["item", "carrinho", "quantidade"]
+    list_editable = ["produto", "carrinho", "quantidade"]
 
 admin.site.register(Item, ItemAdmin)

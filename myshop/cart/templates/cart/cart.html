@@ -20,7 +20,7 @@
 
 
 {% block content %}
-    <h1>Your shopping cart</h1>
+    <h1>Carrinho</h1>
     <table class="cart">
         <thead>
         <tr>
@@ -33,21 +33,25 @@
         </tr>
         </thead>
         <tbody>
-            {% for item in itens %}
+            {% for i in itens %}
                 <tr>
                     <td>
-                        <a href="{{ produto.get_absolute_url }}">
-                            <img src="{% if item.image %}{{ item.image.url}}{% else %}{% static "shop/img/no_image.png" %}{% endif %}">
+                        <a href="{{ i.produto.get_absolute_url }}">
+                            <img src="{% if i.produto.imagem %}{{ i.produto.imagem.url}}{% else %}{% static "shop/img/no_image.png" %}{% endif %}">
                         </a>
                     </td>
-                    <td>{{ produto.nome }}</td>
-                    <td>{{ item.quantidade }}</td>
-                    <td><a href="{% url "cart:cart_item_delete" item.id%}">Remove</a></td>
-                    <td class="num">{{ item.price }}</td>
+                    <td>{{ i.produto.nome }}</td>
+                    <td>{{ i.quantidade }}</td>
+                    <td><a href="{% url "cart:cart_item_delete" i.id%}">Remove</a></td>
+                    <td >{{ i.produto.preco }}</td>
+                    <td >{{ i.get_total_price }}</td>
 
                 </tr>
             {% endfor %}
+            <tr><td></td><td></td><td></td><td></td><td>Total: </td><td>{{ total }}</td></tr>
+
         </tbody>
+
 {#        <tbody>#}
 {#        {% for item in itens %}#}
 {#            {% with product=item.product %}#}
@@ -72,6 +76,7 @@
 {#        </tr>#}
 {#        </tbody>#}
     </table>
+
     <p class="text-right">
         <a href="{% url "shop:product_list" %}" class="button light">Continue shopping</a>
         <a href="#" class="button">Checkout</a>

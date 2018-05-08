@@ -30,7 +30,8 @@
             <div class="cart">
                 {% if request.user.is_authenticated %}
                     <a href="{% url "cart:mostrar_carrinho" %}">Ver Carrinho</a>
-                    ####TEXTO CARRINHO####
+                    {{ total_on_base }}
+
                 {% endif %}
 
             </div>

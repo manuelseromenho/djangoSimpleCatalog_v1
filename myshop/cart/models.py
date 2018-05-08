@@ -1,9 +1,12 @@
+#django imports
 from django.contrib.auth.models import User
 from django.db import models
-
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
+#local imports
 from shop.models import Produto
 
 
@@ -20,20 +23,46 @@ class Carrinho(models.Model):
     def __str__(self):
         return str(self.id)
 
+    def valor_total_carrinho(self):
+        result = sum(itens.produto.preco * itens.quantidade for itens in self.item_set.all())
+        self.total = result
+
 
 class Item(models.Model):
 
-    item = models.ForeignKey(Produto, on_delete=models.CASCADE, null=True)
+    produto = models.ForeignKey(Produto, on_delete=models.CASCADE, null=True)
     carrinho = models.ForeignKey(Carrinho, on_delete=models.CASCADE, null=True)
     quantidade = models.PositiveIntegerField()
 
     # para garantir que o item não se repete no mesmo carrinho
     class Meta:
-        unique_together = ('item', 'carrinho')
+        unique_together = ('produto', 'carrinho')
 
     def __str__(self):
-        return str(self.item.nome)
+        return self.produto.nome
+
+    def get_total_price(self):
+        return self.produto.preco * self.quantidade
 
 
+@receiver(post_save, sender=Item, dispatch_uid="update_total_cart")
+def update_total(sender, instance, **kwargs):
+    instance.carrinho.valor_total_carrinho()
+
+    post_save.disconnect(sender=Item)
+    instance.carrinho.save()
+    post_save.connect(update_total, sender=Item)
 
 
+@receiver(post_delete, sender=Item, dispatch_uid="update_total_cart_delete")
+def update_total_delete(sender, instance, **kwargs):
+
+    carrinho = instance.carrinho
+    itens = Item.objects.filter(carrinho=carrinho)
+    total = sum(i.produto.preco * i.quantidade for i in itens)
+    instance.carrinho.total = total
+    #carrinho.save()
+
+    post_delete.disconnect(sender=Item)
+    instance.carrinho.save()
+    post_delete.connect(update_total_delete, sender=Item)

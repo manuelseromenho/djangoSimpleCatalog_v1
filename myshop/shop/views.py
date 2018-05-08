@@ -5,9 +5,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView
 
-#django import
+#local imports
 from .models import Categoria, SubCategoria, Produto, Perfil
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm
+
 
 
 def product_list(request, sub_category_slug=None, category_slug=None):
@@ -46,6 +47,7 @@ def product_list(request, sub_category_slug=None, category_slug=None):
             'subcategorias': subcategorias,
             'produtos': produtos
         })
+
 
 def product_details(request, product_slug):
 
@@ -90,7 +92,7 @@ def register(request):
                 user_form.cleaned_data['password'])
             # Save the User object
             new_user.save()
-            # Create the user profile
+            # Create the user profiles
             perfil = Perfil.objects.create(utilizador=new_user)
             return render(request,
                           'register_done.html',
