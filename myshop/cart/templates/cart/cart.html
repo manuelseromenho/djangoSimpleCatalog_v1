@@ -41,7 +41,19 @@
                         </a>
                     </td>
                     <td>{{ i.produto.nome }}</td>
+                    <td>
+                        <form action='{% url "cart:adicionar_carrinho" %}' method="post">
+                            {% csrf_token %}
+                            <input style="width:10%" type="number" name="quantity" value="0"/>
+                            <input type="hidden" value="{{ i.produto.nome }}"/>
+                            <input type="hidden" name="slug" value="{{ i.produto.slug }}"/>
+                            <input type="submit" value="Atualizar"/>
+                        </form>
+                    </td>
+
+
                     <td>{{ i.quantidade }}</td>
+
                     <td><a href="{% url "cart:cart_item_delete" i.id%}">Remove</a></td>
                     <td >{{ i.produto.preco }}</td>
                     <td >{{ i.get_total_price }}</td>

@@ -63,8 +63,20 @@ class Produto(models.Model):
         return reverse('shop:product_details', args=[self.slug])
 
 
+class MetodoPagamento(models.Model):
+    metodo_pagamento = models.TextField(max_length=20, blank=True)
+    taxa_metodo = models.DecimalField(max_digits=3, decimal_places=2)
+
+    def __str__(self):
+        return 'Perfil do utilizador{}'.format(self.utilizador.username)
+
+
 class Perfil(models.Model):
     utilizador = models.OneToOneField(User)
+    endereco_envio = models.TextField(max_length=100, blank=True)
+    endereco_faturacao = models.TextField(max_length=100, blank=True)
+    nif = models.TextField(max_length=11, blank=True)
+    metodo_pagamento = models
     data_nascimento = models.DateField(blank=True, null=True)
     foto = models.ImageField(upload_to='utilizadores/%Y/%m/%d', blank=True)
 

@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.generic import DeleteView
+from django.contrib.auth.models import User
 
 #local imports
 from .models import Categoria, SubCategoria, Produto, Perfil
@@ -114,6 +115,8 @@ def edit(request):
             data=request.POST,
             files=request.FILES)
         if user_form.is_valid() and perfil_form.is_valid():
+            user = User.objects.get(username=user_form.cleaned_data["username"])
+            user.set_password(user_form.cleaned_data["password"])
             user_form.save()
             perfil_form.save()
     else:

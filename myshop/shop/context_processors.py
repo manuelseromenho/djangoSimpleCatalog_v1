@@ -9,9 +9,13 @@ from cart.models import Carrinho, Item
 def total_on_base(request):
 
     utilizador = request.user
-    if not utilizador.is_anonymous():
-        carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
-        total_on_base = carrinho.total
+
+    if utilizador.is_authenticated():
+        if not Carrinho.objects.filter(utilizador=utilizador):
+            total_on_base = 0
+        else:
+            carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+            total_on_base = carrinho.total
     else:
         total_on_base = 0
 

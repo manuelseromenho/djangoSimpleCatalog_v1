@@ -41,7 +41,12 @@ def adicionar_carrinho(request):
         utilizador = request.user
 
         # ***** Filtrar carrinho por user, se não existir criar
-        carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+        if Carrinho.objects.filter(utilizador=utilizador):
+            carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+        else:
+            carrinho = Carrinho(utilizador= utilizador)
+            carrinho.save()
+
 
         # Com o carrinho verificar se existem o item dentro do carrinho
         # se existir aumenta a quantidade
@@ -78,10 +83,15 @@ def adicionar_carrinho(request):
 
 def mostrar_carrinho(request):
 
-    # if request.method == 'POST':
     utilizador = request.user
-    # Filtrar carrinho por user, se não existir criar
-    carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+
+    # ***** Filtrar carrinho por user, se não existir criar
+    if Carrinho.objects.filter(utilizador=utilizador):
+        carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+    else:
+        carrinho = Carrinho(utilizador=utilizador)
+        carrinho.save()
+
     #itens = Item.objects.filter(carrinho = carrinho).select_related('produto')
     itens = Item.objects.filter(carrinho=carrinho)
 
@@ -90,9 +100,6 @@ def mostrar_carrinho(request):
 
     #item = Item.objects.filter(item=id_produto).first()
 
-    # Com o carrinho verificar se existem o item dentro do carrinho
-    # se existir aumenta a quantidade
-    # cc Cria o item e adiciona ao carrinho
     return render(request, 'cart/cart.html', {'itens': itens, 'total': total})
 
 

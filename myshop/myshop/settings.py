@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 from django.core.urlresolvers import reverse_lazy
 
-LOGIN_REDIRECT_URL = reverse_lazy('shop:dashboard')
+LOGIN_REDIRECT_URL = reverse_lazy('shop:product_list')
 LOGIN_URL = reverse_lazy('shop:login')
 LOGOUT_URL = reverse_lazy('shop:loggedout')
 
@@ -32,6 +32,7 @@ SECRET_KEY = '0(-eok9z=l_!)%^0wb$snbc9qi^y4!(z+r)77(x1mw(!k32nhm'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 
 # Application definition

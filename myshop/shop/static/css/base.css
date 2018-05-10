@@ -29,6 +29,15 @@ a.button, input[type="submit"] {
 }
 
 /********Manuel Seromenho***********/
+#makebutton{
+    color:#fff;
+    background:#5993bb;
+    border-radius:4px;
+    padding:10px 20px;
+    font-size:14px;
+    border:0;
+}
+
 #delete_item_button{
     padding:5px 8px;
 }
@@ -102,7 +111,7 @@ form p label {
 }
 
 form p input {
-    width:300px;
+    width:200px;
     font-size:13px;
     margin-bottom:10px;
     padding:10px 12px;

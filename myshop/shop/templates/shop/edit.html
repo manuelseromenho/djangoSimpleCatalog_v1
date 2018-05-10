@@ -5,10 +5,14 @@
     <h1>Editar Perfil</h1>
     <p>Utilize o seguinte formulário para editar o seu perfil de utilizador:</p>
 
+    <a id="makebutton" href="{% url "shop:password_change" %}">Alterar Palavra Passe</a>
     <form action="." method="post" enctype="multipart/form-data">
         {{ user_form.as_p }}
         {{ perfil_form.as_p }}
         {% csrf_token %}
         <p><input type="submit" value="Gravar alterações!"></p>
     </form>
+
+
+{#    <button><a href="{% url shop:edit %}">Editar</a></button>#}
 {% endblock %}
