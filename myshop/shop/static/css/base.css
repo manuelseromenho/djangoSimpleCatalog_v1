@@ -101,7 +101,7 @@ td input[type="submit"] {
 }
 
 form p label, form p input {
-    float:left;
+    /*float:left;*/
     clear:both;
 }
 
@@ -111,7 +111,7 @@ form p label {
 }
 
 form p input {
-    width:200px;
+    width:300px;
     font-size:13px;
     margin-bottom:10px;
     padding:10px 12px;
@@ -162,7 +162,12 @@ ul.errorlist {
     overflow:hidden;
 }
 
-/********Manuel Seromenho***********
+/********Manuel Seromenho***********/
+textarea {
+    height:3em;
+}
+
+/*
 #content .item img
 {
     width: 40%;

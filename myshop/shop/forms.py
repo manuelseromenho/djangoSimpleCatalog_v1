@@ -1,7 +1,10 @@
+#django imports
 from django import forms
 from django.contrib.auth.forms import SetPasswordForm, PasswordChangeForm
-from collections import OrderedDict
 from django.contrib.auth.models import User
+from collections import OrderedDict
+
+#local imports
 from .models import Perfil
 
 class AdminPasswordChangeForm(forms.Form):
@@ -65,4 +68,5 @@ class UserEditForm(forms.ModelForm):
 class PerfilEditForm(forms.ModelForm):
     class Meta:
         model = Perfil
-        fields = ('data_nascimento', 'foto')
+        fields = ('endereco_envio','endereco_faturacao', 'nif','metodo_pagamento', 'data_nascimento', 'foto')
+

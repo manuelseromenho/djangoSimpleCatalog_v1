@@ -1,3 +1,4 @@
+#django imports
 from django.contrib.auth.models import User
 from django.db import models
 from django.conf import settings
@@ -68,15 +69,15 @@ class MetodoPagamento(models.Model):
     taxa_metodo = models.DecimalField(max_digits=3, decimal_places=2)
 
     def __str__(self):
-        return 'Perfil do utilizador{}'.format(self.utilizador.username)
+        return '{}'.format(self.metodo_pagamento)
 
 
 class Perfil(models.Model):
+    metodo_pagamento = models.ForeignKey(MetodoPagamento, default=1, on_delete=models.CASCADE)
     utilizador = models.OneToOneField(User)
     endereco_envio = models.TextField(max_length=100, blank=True)
     endereco_faturacao = models.TextField(max_length=100, blank=True)
-    nif = models.TextField(max_length=11, blank=True)
-    metodo_pagamento = models
+    nif = models.CharField(max_length=11, blank=True)
     data_nascimento = models.DateField(blank=True, null=True)
     foto = models.ImageField(upload_to='utilizadores/%Y/%m/%d', blank=True)
 

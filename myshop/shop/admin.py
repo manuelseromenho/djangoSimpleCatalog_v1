@@ -1,5 +1,9 @@
+#django imports
 from django.contrib import admin
-from .models import Categoria, SubCategoria, Produto, Perfil
+
+#local imports
+from .models import Categoria, SubCategoria, Produto, Perfil, MetodoPagamento
+
 
 
 class CategoriaAdmin(admin.ModelAdmin):
@@ -39,5 +43,13 @@ class PerfilAdmin(admin.ModelAdmin):
     list_display = ['utilizador', 'data_nascimento', 'foto']
 
 admin.site.register(Perfil, PerfilAdmin)
+
+
+class MetodoPagamentoAdmin(admin.ModelAdmin):
+    list_display = ['metodo_pagamento',  'taxa_metodo']
+    list_editable = ['metodo_pagamento',  'taxa_metodo']
+
+admin.site.register(MetodoPagamento, MetodoPagamentoAdmin)
+
 
 

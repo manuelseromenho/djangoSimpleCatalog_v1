@@ -8,6 +8,16 @@
     <a id="makebutton" href="{% url "shop:password_change" %}">Alterar Palavra Passe</a>
     <form action="." method="post" enctype="multipart/form-data">
         {{ user_form.as_p }}
+
+{#        <label for="metodos_pagamento">Metodo de Pagamento: </label>#}
+{#        <select name="metodos_pagamento" >#}
+{#            {% for i in metodos_pagamento %}#}
+{#                <option value="{{ i.pk  }}"> {{ i.metodo_pagamento }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+
+
+        <input type="hidden" value="{{ produto.nome }}"/>
         {{ perfil_form.as_p }}
         {% csrf_token %}
         <p><input type="submit" value="Gravar alterações!"></p>

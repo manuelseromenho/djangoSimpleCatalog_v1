@@ -7,7 +7,7 @@ from django.views.generic import DeleteView
 from django.contrib.auth.models import User
 
 #local imports
-from .models import Categoria, SubCategoria, Produto, Perfil
+from .models import Categoria, SubCategoria, Produto, Perfil, MetodoPagamento
 from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm
 
 
@@ -106,7 +106,11 @@ def register(request):
 
 @login_required
 def edit(request):
+
     if request.method == 'POST':
+
+        metodos_pagamento = MetodoPagamento.objects.all()
+
         user_form = UserEditForm(
             instance=request.user,
             data=request.POST)
@@ -115,12 +119,17 @@ def edit(request):
             data=request.POST,
             files=request.FILES)
         if user_form.is_valid() and perfil_form.is_valid():
-            user = User.objects.get(username=user_form.cleaned_data["username"])
-            user.set_password(user_form.cleaned_data["password"])
+            # user = User.objects.get(username=user_form.cleaned_data["username"])
+            # user.set_password(user_form.cleaned_data["password"])
             user_form.save()
             perfil_form.save()
     else:
+        metodos_pagamento = MetodoPagamento.objects.all()
         user_form = UserEditForm(instance=request.user)
         perfil_form = PerfilEditForm(instance=request.user.perfil)
-    return render(request,'shop/edit.html',{'user_form': user_form,'perfil_form': perfil_form})
+
+    return render(request,'shop/edit.html',
+                  {'user_form': user_form,
+                   'perfil_form': perfil_form,
+                   'metodos_pagamento': metodos_pagamento,})
 

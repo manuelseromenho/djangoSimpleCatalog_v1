@@ -1,0 +1,9 @@
+{% extends "shop/base.html" %}
+
+{% block title %}
+    Compra efectuada!
+{% endblock %}
+{% block content %}
+    <h1>Compra efectuada! Obrigado pela sua preferência!</h1>
+    <p>A sua encomenda foi processada com o numero <strong>{{ order.id }}</strong>.</p>
+{% endblock %}
