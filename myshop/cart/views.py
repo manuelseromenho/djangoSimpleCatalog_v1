@@ -18,8 +18,17 @@ from .models import Carrinho, Item
 
 def delete_item(request, pk):
     try:
+
         item = Item.objects.get(id=pk)
         item.delete()
+
+        utilizador = request.user
+        carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+        itens = Item.objects.filter(carrinho=carrinho)
+        total = sum(i.produto.preco * i.quantidade for i in itens)
+        carrinho.total = total
+        carrinho.save()
+
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse("cart:mostrar_carrinho"))
     return HttpResponseRedirect(reverse("cart:mostrar_carrinho"))
@@ -62,7 +71,7 @@ def adicionar_carrinho(request):
             item.save()
         else:
             # Update Item
-            item_repetido.quantidade += int(quantity)
+            item_repetido.quantidade = int(quantity)
             item_repetido.save()
             # return render(request, 'cart/cart.html')
 

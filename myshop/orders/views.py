@@ -13,7 +13,6 @@ def order_create(request):
     #carrinho = Carrinho(request)
     utilizador = request.user
 
-
     carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
     itens_carrinho = Item.objects.filter(carrinho=carrinho)
 
@@ -22,15 +21,21 @@ def order_create(request):
 
         if form.is_valid():
             order = form.save()
-            for item in carrinho:
+
+            for item in itens_carrinho:
                 OrderItem.objects.create(order=order,
-                    produto=item['produto'],
-                    preco=item['preco'],
-                    quantidade=item['quantidade'])
+                    produto=item.produto,
+                    preco=item.get_total_price() , #preco total dos elementos da linha
+                    quantidade=item.quantidade)
+
+                # remover stock após venda
+                item.produto.stock = item.produto.stock - item.quantidade
+                item.produto.save()
 
         # clear the cart
 
-        #carrinho.delete()
+
+        carrinho.delete()
 
         return render(request,
             'orders/order/created.html',

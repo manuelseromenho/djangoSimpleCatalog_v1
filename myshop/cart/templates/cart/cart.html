@@ -68,8 +68,8 @@
 
     <p class="text-right">
         <a href="{% url "shop:product_list" %}" class="button light">Comprar mais!</a>
-        <a href="{% url "orders:order_create" %}" class="button">
-            Finalizar Compra
-        </a>
+        {% if total != 0 %}
+            <a href="{% url "orders:order_create" %}" class="button">Finalizar Compra</a>
+        {% endif %}
     </p>
 {% endblock %}

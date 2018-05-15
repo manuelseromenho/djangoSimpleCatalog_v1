@@ -45,24 +45,26 @@ class Item(models.Model):
         return self.produto.preco * self.quantidade
 
 
-@receiver(post_save, sender=Item, dispatch_uid="update_total_cart")
-def update_total(sender, instance, **kwargs):
-    instance.carrinho.valor_total_carrinho()
 
-    post_save.disconnect(sender=Item)
-    instance.carrinho.save()
-    post_save.connect(update_total, sender=Item)
+#Possiveis Signals
+
+# @receiver(post_save, sender=Item, dispatch_uid="update_total_cart")
+# def update_total(sender, instance, **kwargs):
+#     instance.carrinho.valor_total_carrinho()
+#
+#     post_save.disconnect(sender=Item)
+#     instance.carrinho.save()
+#     post_save.connect(update_total, sender=Item)
 
 
-@receiver(post_delete, sender=Item, dispatch_uid="update_total_cart_delete")
-def update_total_delete(sender, instance, **kwargs):
-
-    carrinho = instance.carrinho
-    itens = Item.objects.filter(carrinho=carrinho)
-    total = sum(i.produto.preco * i.quantidade for i in itens)
-    instance.carrinho.total = total
-    #carrinho.save()
-
-    post_delete.disconnect(sender=Item)
-    instance.carrinho.save()
-    post_delete.connect(update_total_delete, sender=Item)
+# @receiver(post_delete, sender=Item, dispatch_uid="update_total_cart_delete")
+# def update_total_delete(sender, instance, **kwargs):
+#
+#     carrinho = instance.carrinho
+#     itens = Item.objects.filter(carrinho=carrinho)
+#     total = sum(i.produto.preco * i.quantidade for i in itens)
+#     instance.carrinho.total = total
+#
+#     post_delete.disconnect(sender=Item)
+#     instance.carrinho.save()
+#     post_delete.connect(update_total_delete, sender=Item)

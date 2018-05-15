@@ -9,7 +9,7 @@ class OrderCreateForm(forms.ModelForm):
 
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'email']
+        fields = ['first_name', 'last_name', 'email', 'endereco_envio','endereco_faturacao', 'nif','metodo_pagamento']
 
 
 class UserCreateForm(forms.ModelForm):
