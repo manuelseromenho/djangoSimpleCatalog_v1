@@ -23,6 +23,7 @@
         {{ utilizador_form.as_p }}
         {{ perfil_form.as_p }}
 
+
 {#        <label for="id_first_name">Nome: </label>#}
 {#        <input type="text" id="id_first_name" name="id_first_name" value="{{ utilizador.first_name }}"/>#}
 {#        <br/>#}
@@ -33,6 +34,9 @@
 {#        <input type="text" name="email" value="{{ utilizador.email }}"/>#}
 
         <p><input type="submit" value="Encomendar"></p>
+        {% if flag_required == 1 %}
+            <p style="color:red"> Endereço de Envio e Endereço de Faturação são obrigatórios</p>
+        {% endif %}
         {% csrf_token %}
     </form>
 {% endblock %}

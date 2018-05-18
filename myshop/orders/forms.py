@@ -22,3 +22,11 @@ class PerfilCreateForm(forms.ModelForm):
     class Meta:
         model = Perfil
         fields = ('endereco_envio','endereco_faturacao', 'nif','metodo_pagamento')
+
+    def __init__(self, *args, **kwargs):
+        super(PerfilCreateForm, self).__init__(*args, **kwargs)
+
+        # for key in self.fields:
+        self.fields['endereco_envio'].required = True
+        self.fields['endereco_faturacao'].required = True
+

@@ -142,6 +142,7 @@ def edit(request):
 def order_list(request):
 
     perfil = Perfil.objects.get(utilizador=request.user)
+
     utilizador_nif = perfil.nif
 
     orders = Order.objects.filter(nif=utilizador_nif)

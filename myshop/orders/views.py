@@ -17,10 +17,18 @@ def order_create(request):
     carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
     itens_carrinho = Item.objects.filter(carrinho=carrinho)
 
+    flag_required = 0
 
     if request.method == 'POST':
         form = OrderCreateForm(request.POST)
 
+        # if not form.is_valid():
+        #     flag_required = 1
+        #     order = Order.objects.get(id=utilizador.id)
+        #     return render(request,
+        #                   'orders/order/create.html',
+        #                   {'order': order,'flag_required': flag_required})
+        # elif \
         if form.is_valid():
             order = form.save()
             nr_de_encomenda = Order.objects.first()
