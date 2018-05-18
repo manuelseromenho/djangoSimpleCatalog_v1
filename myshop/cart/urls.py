@@ -11,6 +11,7 @@ urlpatterns = [
     url(r'^adicionar/$', views.adicionar_carrinho, name="adicionar_carrinho"),
     url(r'^$', views.mostrar_carrinho, name="mostrar_carrinho"),
     #url(r'^carrinho/delete/(?P<pk>\d+)/$', views.ItemDelete.as_view(), name='cart_item_delete'),
+    url(r'^carrinho/deleteall/$', views.delete_all_items, name='cart_delete_allitems'),
     url(r'^carrinho/delete/(?P<pk>\d+)/$', views.delete_item, name='cart_item_delete'),
 
 

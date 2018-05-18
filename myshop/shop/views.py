@@ -7,9 +7,10 @@ from django.views.generic import DeleteView
 from django.contrib.auth.models import User
 
 #local imports
+from orders.models import Order, OrderItem
+from cart.models import Carrinho, Item
 from .models import Categoria, SubCategoria, Produto, Perfil, MetodoPagamento
-from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm
-
+from .forms import LoginForm, UserRegistrationForm, UserEditForm, PerfilEditForm, UserDetailsForm, PerfilDetailsForm
 
 
 def product_list(request, sub_category_slug=None, category_slug=None):
@@ -58,23 +59,6 @@ def product_details(request, product_slug):
     #if request.method == 'GET':
     produto = get_object_or_404(Produto, slug=product_slug)
 
-    erro_stock = 0
-    # Update Item
-    # if produto.stock >= int(quantity):
-    #     item_repetido.quantidade = int(quantity)
-    #     item_repetido.save()
-    #
-    #     total = sum(i.produto.preco * i.quantidade for i in itens)
-    #     carrinho.total = total
-    #     carrinho.save()
-    #
-    #     erro_stock = 0
-    #
-    # else:
-    #     erro_stock = 1
-    #     total = carrinho.total
-
-
     return render(request,'shop/produto/details.html', {'produto': produto})
 
 
@@ -90,10 +74,15 @@ def dashboard(request):
         except ObjectDoesNotExist:
             pass
 
-    return render(request,'shop/dashboard.html', {
-        'section': 'dashboard',
-        'foto': profile_foto
-    })
+        user_form = UserDetailsForm(instance=request.user)
+
+        perfil_form = PerfilDetailsForm(instance=request.user.perfil)
+
+    return render(request, 'shop/dashboard.html',
+                  {'section': 'dashboard',
+                   'foto': profile_foto,
+                   'user_form': user_form,
+                   'perfil_form': perfil_form,})
 
 
 def register(request):
@@ -148,4 +137,14 @@ def edit(request):
                   {'user_form': user_form,
                    'perfil_form': perfil_form,
                    'metodos_pagamento': metodos_pagamento,})
+
+@login_required
+def order_list(request):
+
+    perfil = Perfil.objects.get(utilizador=request.user)
+    utilizador_nif = perfil.nif
+
+    orders = Order.objects.filter(nif=utilizador_nif)
+
+    return render(request, 'shop/order_list.html', {'orders': orders, })
 

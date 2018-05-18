@@ -79,9 +79,19 @@ class UserEditForm(forms.ModelForm):
         model = User
         fields = ('first_name','last_name','email')
 
-
 class PerfilEditForm(forms.ModelForm):
     class Meta:
         model = Perfil
         fields = ('endereco_envio','endereco_faturacao', 'nif','metodo_pagamento', 'data_nascimento', 'foto')
 
+
+class UserDetailsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'email')
+
+
+class PerfilDetailsForm(forms.ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ('endereco_envio','endereco_faturacao', 'nif','metodo_pagamento', 'data_nascimento', )

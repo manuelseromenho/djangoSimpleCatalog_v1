@@ -45,9 +45,14 @@ urlpatterns = [
     url(r'^loggedout/$', 'django.contrib.auth.views.logout', name='loggedout'),
     url(r'^logout-then-login/$', 'django.contrib.auth.views.logout_then_login', name='logout_then_login'),
 
+    # show orders list
+    url(r'^orderlist/$', views.order_list, name='order_list'),
+
     # products
     url(r'^product/(?P<product_slug>[-\w]+)/$', views.product_details, name='product_details'),
     url(r'^$', views.product_list, name="product_list"),
     url(r'^(?P<sub_category_slug>[-\w]+)/$', views.product_list, name='product_list_by_subcategory'),
+
+
 
 ]

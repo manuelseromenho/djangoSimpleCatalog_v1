@@ -56,15 +56,19 @@
 
 
     <p class="text-right">
-        <a href="{% url "shop:product_list" %}" class="button light">Comprar mais!</a>
+
+        {# Se o valor total for zero, botão Esvaziar Carrinho e Finalizar Compra deixam de existir    #}
         {% if total != 0 %}
             {% if erro_stock == 1 %}
 
             {% else %}
+                <a href="{% url "cart:cart_delete_allitems" %}" class="button light">Esvaziar Carrinho</a>
                 <a href="{% url "orders:order_create" %}" class="button">Finalizar Compra</a>
             {% endif %}
-
         {% endif %}
+
+        <a href="{% url "shop:product_list" %}" class="button light">Comprar mais!</a>
+
     </p>
 
 {#    <script>#}

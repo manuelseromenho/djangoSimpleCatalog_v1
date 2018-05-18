@@ -35,17 +35,35 @@ def delete_item(request, pk):
     return HttpResponseRedirect(reverse("cart:mostrar_carrinho"))
 
 
+def delete_all_items(request):
+    try:
+
+        item = Item.objects.all()
+        item.delete()
+
+        utilizador = request.user
+        carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+        itens = Item.objects.filter(carrinho=carrinho)
+        total = sum(i.produto.preco * i.quantidade for i in itens)
+        carrinho.total = total
+        carrinho.save()
+
+    except ObjectDoesNotExist:
+        return HttpResponseRedirect(reverse("cart:mostrar_carrinho"))
+    return HttpResponseRedirect(reverse("cart:mostrar_carrinho"))
+
+
 def adicionar_carrinho(request):
     slug = request.POST.get('slug', '')
     quantity = request.POST.get("quantity", "")
 
-
-    if int(quantity) < 1:
-        return mostrar_carrinho(request)
-
-
     if request.method == 'POST':
         produto = get_object_or_404(Produto, slug=slug)
+
+        if quantity == '':
+            return render(request, 'shop/produto/details.html', {'produto': produto, 'erro_stock': 1})
+        elif int(quantity) < 1 or produto.stock<int(quantity):
+            return render(request, 'shop/produto/details.html', {'produto': produto, 'erro_stock': 1})
 
         # Pesquisar por utilizador
         utilizador = request.user

@@ -12,6 +12,7 @@ def order_create(request):
 
     #carrinho = Carrinho(request)
     utilizador = request.user
+    perfil = Perfil.objects.filter(utilizador=utilizador).last()
 
     carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
     itens_carrinho = Item.objects.filter(carrinho=carrinho)
@@ -47,7 +48,8 @@ def order_create(request):
                 # enviar email para empresa
                 from django.core.mail import send_mail
                 send_mail('ENCOMENDA REALIZADA nr ' + str(nr_de_encomenda) + ' na RogueBit Shop',
-                          'ENCOMENDA REALIZADA nr ' + str(nr_de_encomenda) + ' pelo/a cliente ' + utilizador.first_name + ' ' + utilizador.last_name,
+                          'ENCOMENDA REALIZADA nr ' + str(nr_de_encomenda) + ' pelo/a cliente '
+                          + utilizador.first_name + ' ' + utilizador.last_name + ' com a morada de entrega: ' + perfil.endereco_envio + ' e morada de faturação: ' +  perfil.endereco_faturacao,
                           'postmaster@sandbox5e65addc56f44613bc8755aa1da8e3d4.mailgun.org',
                           ['geral@inforzen.pt'])
 
