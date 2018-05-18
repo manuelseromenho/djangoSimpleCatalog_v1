@@ -19,19 +19,10 @@
         <p>Total: {{ carrinho.total }} €</p>
     </div>
     <form action="." method="post" class="order-form">
-{#       {{ form.as_p }}#}
+
         {{ utilizador_form.as_p }}
         {{ perfil_form.as_p }}
 
-
-{#        <label for="id_first_name">Nome: </label>#}
-{#        <input type="text" id="id_first_name" name="id_first_name" value="{{ utilizador.first_name }}"/>#}
-{#        <br/>#}
-{#        <label for="first_name">Sobrenome: </label>#}
-{#        <input type="text" name="last_name" value="{{ utilizador.last_name }}"/>#}
-{#        <br/>#}
-{#        <label for="first_name">Email: </label>#}
-{#        <input type="text" name="email" value="{{ utilizador.email }}"/>#}
 
         <p><input type="submit" value="Encomendar"></p>
         {% if flag_required == 1 %}

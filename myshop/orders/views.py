@@ -64,13 +64,25 @@ def order_create(request):
         # clear the cart
         carrinho.delete()
 
+
+        user_form = UserCreateForm(
+            instance=request.user,
+            data=request.POST)
+        perfil_form = PerfilCreateForm(
+            instance=request.user.perfil,
+            data=request.POST,
+            files=request.FILES)
+        if user_form.is_valid() and perfil_form.is_valid():
+            user_form.save()
+            perfil_form.save()
+
+
         return render(request,
             'orders/order/created.html',
             {'order': order})
     else:
         form = OrderCreateForm()
         utilizador_form = UserCreateForm(instance=request.user)
-
         perfil_form = PerfilCreateForm(instance=request.user.perfil)
 
     return render(request,
