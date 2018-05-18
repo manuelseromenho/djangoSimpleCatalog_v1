@@ -3,8 +3,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.views.generic import DeleteView
+
 
 #local imports
 from shop.models import Produto
@@ -71,9 +72,11 @@ def adicionar_carrinho(request):
             item.save()
         else:
             # Update Item
-            item_repetido.quantidade = int(quantity)
+            item_repetido.quantidade += int(quantity)
             item_repetido.save()
             # return render(request, 'cart/cart.html')
+
+
 
         itens = Item.objects.filter(carrinho=carrinho)
         total = sum(i.produto.preco * i.quantidade for i in itens)
@@ -109,8 +112,62 @@ def mostrar_carrinho(request):
 
     #item = Item.objects.filter(item=id_produto).first()
 
-    return render(request, 'cart/cart.html', {'itens': itens, 'total': total})
+    return render(request, 'cart/cart.html', {'itens': itens, 'total': total, })
 
 
+def atualizar_carrinho(request):
+    slug = request.POST.get('slug', '')
+    quantity = request.POST.get("quantity", "")
+    # slug = request.GET.get('slug')
+    # quantity = request.GET.get("quantity")
+    erro_stock = 0
+
+
+    if request.method == 'POST':
+        produto = get_object_or_404(Produto, slug=slug)
+
+        # Pesquisar por utilizador
+        utilizador = request.user
+
+        # ***** Filtrar carrinho por user, se não existir criar
+        if Carrinho.objects.filter(utilizador=utilizador):
+            carrinho = Carrinho.objects.filter(utilizador=utilizador).last()
+        else:
+            carrinho = Carrinho(utilizador= utilizador)
+            carrinho.save()
+
+        itens = Item.objects.filter(carrinho=carrinho)
+        item_repetido = Item.objects.filter(carrinho=carrinho, produto=produto).first()
+
+        # Update Item
+        if produto.stock >= int(quantity):
+            item_repetido.quantidade = int(quantity)
+            item_repetido.save()
+
+
+            total = sum(i.produto.preco * i.quantidade for i in itens)
+            carrinho.total = total
+            carrinho.save()
+
+            erro_stock = 0
+
+            # answer = ""
+            # data = {
+            #     'respond': answer,
+            #     'quantity': quantity,
+            # }
+            # return JsonResponse(data)
+        else:
+            erro_stock = 1
+            total = carrinho.total
+            # answer = "Valor Superior ao Stock Existente"
+            # data = {
+            #     'respond': answer,
+            #     'quantity': quantity,
+            # }
+            # return JsonResponse(data)
+
+
+    return render(request, 'cart/cart.html', {'itens': itens, 'total': total, 'erro_stock': erro_stock })
 
 

@@ -8,8 +8,19 @@
         <h2><a href="{{ produto.subcategoria.get_absolute_url }}">{{ produto.subcategoria }}</a></h2>
         <p class="price"> PVP: {{ produto.preco }} €</p>
 
+        {# Caso não exista stock não mostra o botão de adicioar ao carrinho e indica "Sem Stock" #}
         {% if produto.stock > 0 %}
+
             <p style="color: green"> Em Stock!</p>
+                <form action='{% url "cart:adicionar_carrinho" %}' method="post">
+                {% csrf_token %}
+                <input type="number" name="quantity" value="0" max="{{ produto.stock }}"/>
+                <input type="hidden" value="{{ produto.nome }}"/>
+                <input type="hidden" name="slug" value="{{ produto.slug }}"/>
+                <input type="submit" value="Add to Cart"/>
+            </form>
+
+
         {% else %}
             <p style="color: red"> Sem Stock!</p>
         {% endif %}
@@ -18,13 +29,7 @@
         Descrição: {{ produto.descricao }}
 
 
-        <form action='{% url "cart:adicionar_carrinho" %}' method="post">
-            {% csrf_token %}
-            <input type="number" name="quantity" value="0"/>
-            <input type="hidden" value="{{ produto.nome }}"/>
-            <input type="hidden" name="slug" value="{{ produto.slug }}"/>
-            <input type="submit" value="Add to Cart"/>
-        </form>
+
 
 {#        {% if request.method == 'POST' %}#}
 {#            {{ request.user.first_name }} com o produto {{ produto.nome }}#}

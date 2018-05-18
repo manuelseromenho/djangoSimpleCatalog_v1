@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 from django.core.urlresolvers import reverse_lazy
+from decouple import config
 
 LOGIN_REDIRECT_URL = reverse_lazy('shop:product_list')
 LOGIN_URL = reverse_lazy('shop:login')
@@ -32,6 +33,20 @@ SECRET_KEY = '0(-eok9z=l_!)%^0wb$snbc9qi^y4!(z+r)77(x1mw(!k32nhm'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+######################################################
+#EMAIL settings
+
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+
+
+######################################################
+
+
 
 
 
@@ -116,4 +131,5 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

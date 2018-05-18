@@ -1,11 +1,11 @@
 {% extends "shop/base.html" %}
 
 {% block title %}
-    Checkout
+    Finalizar encomenda
 {% endblock %}
 
 {% block content %}
-    <h1>Checkout</h1>
+    <h1>Finalizar encomenda</h1>
     <div class="order-info">
         <h3>A sua encomenda:</h3>
         <ul>
@@ -32,7 +32,7 @@
 {#        <label for="first_name">Email: </label>#}
 {#        <input type="text" name="email" value="{{ utilizador.email }}"/>#}
 
-        <p><input type="submit" value="Place order"></p>
+        <p><input type="submit" value="Encomendar"></p>
         {% csrf_token %}
     </form>
 {% endblock %}

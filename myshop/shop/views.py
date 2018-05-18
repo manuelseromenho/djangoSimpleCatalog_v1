@@ -58,8 +58,24 @@ def product_details(request, product_slug):
     #if request.method == 'GET':
     produto = get_object_or_404(Produto, slug=product_slug)
 
-    return render(request,'shop/produto/details.html',
-    {'produto': produto})
+    erro_stock = 0
+    # Update Item
+    # if produto.stock >= int(quantity):
+    #     item_repetido.quantidade = int(quantity)
+    #     item_repetido.save()
+    #
+    #     total = sum(i.produto.preco * i.quantidade for i in itens)
+    #     carrinho.total = total
+    #     carrinho.save()
+    #
+    #     erro_stock = 0
+    #
+    # else:
+    #     erro_stock = 1
+    #     total = carrinho.total
+
+
+    return render(request,'shop/produto/details.html', {'produto': produto})
 
 
 @login_required

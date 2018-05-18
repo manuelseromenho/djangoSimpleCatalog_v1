@@ -1,24 +1,6 @@
 {% extends "shop/base.html" %}
 {% load static %}
 
-{#{% block content %}#}
-{#    <div>#}
-{#        <h1>Carrinho</h1>#}
-{#        {% for item in itens %}#}
-{##}
-{#                <form action="{% url 'cart:cart_item_delete' item.id %}" method="post">#}
-{#                    {% csrf_token %}#}
-{#                    Produto: {{ item }} Qtd:{{ item.quantidade }}#}
-{##}
-{#                    <input id="delete_item_button" type="submit" value="Delete" />#}
-{#                </form>#}
-{##}
-{#        {% endfor %}#}
-{##}
-{#    </div>#}
-{#{% endblock %}#}
-
-
 {% block content %}
     <h1>Carrinho</h1>
     <table class="cart">
@@ -42,34 +24,74 @@
                     </td>
                     <td>{{ i.produto.nome }}</td>
                     <td>
-                        <form action='{% url "cart:adicionar_carrinho" %}' method="post">
+                        <form id='updateform' action='{% url "cart:atualizar_carrinho" %}' method="post">
                             {% csrf_token %}
-                            <input style="width:10%" type="number" name="quantity" value="0"/>
-                            <input type="hidden" value="{{ i.produto.nome }}"/>
-                            <input type="hidden" name="slug" value="{{ i.produto.slug }}"/>
-                            <input type="submit" value="Atualizar"/>
+                            <input style="width:10%" type="number" name="quantity" value="0" id="produto_quantity"/>
+                            <input type="hidden" value="{{ i.produto.nome }}" id="produto_nome"/>
+                            <input type="hidden" name="slug" value="{{ i.produto.slug }}" id="produto_slug"/>
+                            <input type="submit" value="Atualizar" />
                         </form>
+
                     </td>
 
 
-                    <td>{{ i.quantidade }}</td>
+                    <td id="quantidade_ajax">{{ i.quantidade }}</td>
 
                     <td><a href="{% url "cart:cart_item_delete" i.id%}">Remove</a></td>
-                    <td >{{ i.produto.preco }}</td>
-                    <td >{{ i.get_total_price }}</td>
+                    <td id="produto_preco">{{ i.produto.preco }}</td>
+                    <td id="preco_total">{{ i.get_total_price }}</td>
 
                 </tr>
             {% endfor %}
-            <tr><td></td><td></td><td></td><td></td><td>Total: </td><td>{{ total }}</td></tr>
+            <tr>
+                <td>
+                    {% if erro_stock == 1 %}
+                        <span style="color: red" id="alert_quantity">Sem Stock Disponivel</span>
+                    {% endif %}
+                </td><td></td><td></td><td></td><td>Total: </td><td>{{ total }}</td></tr>
 
         </tbody>
 
     </table>
 
+
     <p class="text-right">
         <a href="{% url "shop:product_list" %}" class="button light">Comprar mais!</a>
         {% if total != 0 %}
-            <a href="{% url "orders:order_create" %}" class="button">Finalizar Compra</a>
+            {% if erro_stock == 1 %}
+
+            {% else %}
+                <a href="{% url "orders:order_create" %}" class="button">Finalizar Compra</a>
+            {% endif %}
+
         {% endif %}
     </p>
+
+{#    <script>#}
+{#            $(document).ready(function(){#}
+{#                $("#updateform").on('submit', function (e) {#}
+{#                        e.preventDefault();#}
+{#                        var quantity = $("#produto_quantity").val();#}
+{#                        var nome = $("#produto_nome").val();#}
+{#                        var slug = $("#produto_slug").val();#}
+{#                        //var input = $(this).serialize()#}
+{##}
+{#                        $.ajax({#}
+{#                            url: '{% url 'cart:atualizar_carrinho' %}',#}
+{#                            data: {#}
+{#                              'quantity': quantity,#}
+{#                                'nome': nome,#}
+{#                                'slug':slug,#}
+{#                            },#}
+{#                            dataType: 'json',#}
+{#                            success: function (data) {#}
+{#                              document.getElementById('alert_quantity').innerHTML = data['respond'];#}
+{#                              document.getElementById('quantidade_ajax').innerHTML = data['quantity'];#}
+{##}
+{#                            }#}
+{#                          });#}
+{#                        });#}
+{#            })#}
+{#    </script>#}
+
 {% endblock %}

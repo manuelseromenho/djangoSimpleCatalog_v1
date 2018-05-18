@@ -7,6 +7,21 @@ from collections import OrderedDict
 #local imports
 from .models import Perfil
 
+# class UserForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = ('email',)
+#
+#     def clean_email(self):
+#         email= self.cleaned_data.get('email')
+#
+#         try:
+#             match = User.objects.get(email = email)
+#         except User.DoesNotExist:
+#             return email
+#
+#     raise forms.ValidationError('This email is already in use or..')
+
 class AdminPasswordChangeForm(forms.Form):
 
     new_password1 = forms.CharField(
