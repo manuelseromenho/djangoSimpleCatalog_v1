@@ -2,6 +2,13 @@
 {% load static %}
 
 {% block content %}
+    {% if erro_stock == 1 %}
+        <span style="color: red; float:left" id="alert_quantity">
+            <script>
+                alert("Erro na selecção de quantidade (quantidade > 0 e quantidade <= stock)")
+            </script>
+        </span>
+    {% endif %}
     <h1>Carrinho</h1>
     <table class="cart">
         <thead>
@@ -44,11 +51,11 @@
                 </tr>
             {% endfor %}
             <tr>
-                <td>
-                    {% if erro_stock == 1 %}
-                        <span style="color: red" id="alert_quantity">Sem Stock Disponivel</span>
-                    {% endif %}
-                </td><td></td><td></td><td></td><td>Total: </td><td>{{ total }}</td></tr>
+                <td></td><td></td><td></td><td></td><td>Total: </td><td>{{ total }}</td>
+            </tr>
+
+
+
 
         </tbody>
 

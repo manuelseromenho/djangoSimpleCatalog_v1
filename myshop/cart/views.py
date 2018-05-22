@@ -158,7 +158,7 @@ def atualizar_carrinho(request):
         item_repetido = Item.objects.filter(carrinho=carrinho, produto=produto).first()
 
         # Update Item
-        if produto.stock >= int(quantity):
+        if produto.stock >= int(quantity) and int(quantity)>0:
             item_repetido.quantidade = int(quantity)
             item_repetido.save()
 

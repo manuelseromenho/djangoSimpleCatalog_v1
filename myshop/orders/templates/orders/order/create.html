@@ -18,16 +18,39 @@
         </ul>
         <p>Total: {{ carrinho.total }} €</p>
     </div>
+
+
+
+
+
+    {#  Pagamento!  #}
     <form action="." method="post" class="order-form">
 
         {{ utilizador_form.as_p }}
         {{ perfil_form.as_p }}
 
 
-        <p><input type="submit" value="Encomendar"></p>
+{#        <p><input type="submit" value="Encomendar"></p>#}
         {% if flag_required == 1 %}
             <p style="color:red"> Endereço de Envio e Endereço de Faturação são obrigatórios</p>
         {% endif %}
         {% csrf_token %}
+
+        <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="{{ pk_stripe }}"
+            data-amount= "{{ valor_total_pagamento }}"
+            data-name="Teste Django"
+            data-description="Example charge"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto"
+            data-currency="eur">
+        </script>
+
     </form>
+
+
+
+
+
 {% endblock %}
